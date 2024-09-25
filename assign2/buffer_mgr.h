@@ -20,13 +20,16 @@ typedef enum ReplacementStrategy {
 typedef int PageNumber;
 #define NO_PAGE -1
 
+// buffer_mgr.h
 typedef struct BM_BufferPool {
-	char *pageFile;
-	int numPages;
-	ReplacementStrategy strategy;
-	void *mgmtData; // use this one to store the bookkeeping info your buffer
-	// manager needs for a buffer pool
+    char *pageFile;                // Page file name
+    int numPages;                  // Number of pages in the buffer pool
+    ReplacementStrategy strategy;  // Page replacement strategy (LRU, FIFO, etc.)
+    void *mgmtData;                // Management data (frames or additional metadata)
+    int stratParam;                // Add stratParam here for strategy-specific data
 } BM_BufferPool;
+
+
 
 typedef struct BM_PageHandle {
 	PageNumber pageNum;
@@ -60,5 +63,13 @@ bool *getDirtyFlags (BM_BufferPool *const bm);
 int *getFixCounts (BM_BufferPool *const bm);
 int getNumReadIO (BM_BufferPool *const bm);
 int getNumWriteIO (BM_BufferPool *const bm);
+
+typedef struct Frames {
+    int pageNumber;      // The page number stored in this frame
+    char *memPage;       // Pointer to the data in this frame (memory page)
+    bool dirty;          // Whether the page is dirty (modified)
+    int fix_cnt;         // Fix count to track how many times this page is pinned
+    int lruOrder;        // An example field for LRU ordering (optional)
+} Frames;
 
 #endif
