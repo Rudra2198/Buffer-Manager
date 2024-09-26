@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+FILE *page;
 
 //Initially, we have to initialize the storage manager
 extern void initStorageManager(void){
@@ -94,11 +95,10 @@ extern RC closePageFile (SM_FileHandle *fHandle){
 
 //Destroying a page file
 extern RC destroyPageFile (char *fileName){
-    if(remove(fileName) == 0){ // If the file is removed successfully
-        return RC_OK;
-    } else {
-        return RC_FILE_NOT_FOUND; // Return an error if the file could not be removed
-    }
+    page = fopen(fileName, "r");
+    if(page == NULL)    return RC_FILE_NOT_FOUND;
+    remove(fileName);
+    return RC_OK;
 }
 
 /*********************** READ OPERATIONS *********************/
@@ -148,7 +148,9 @@ extern int getBlockPos (SM_FileHandle *fHandle){
 //Reading the first Block of the file
 extern RC readFirstBlock (SM_FileHandle *fHandle, SM_PageHandle memPage){
     //Idea: Call the readBlock() function by passing the first page's index i.e. 0
-    return readBlock(0, fHandle, memPage);
+    if(fHandle!=NULL)   return readBlock(0, fHandle, memPage);
+    else
+    return RC_FILE_NOT_FOUND;
 }
 
 //Reading the Last Block of the File

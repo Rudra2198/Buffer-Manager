@@ -24,9 +24,7 @@ int buffer_size = 0;
  * Returns:
  * - RC_OK if the buffer pool is successfully initialized, otherwise an error code.
  */
-RC initBufferPool(BM_BufferPool *const bm, const char *const pageFileName,
-                  const int numPages, ReplacementStrategy strategy,
-                  void *stratData) {
+RC initBufferPool(BM_BufferPool *const bm, const char *const pageFileName,const int numPages, ReplacementStrategy strategy,void *stratData) {
     printf("Initializing the Buffer Pool.\n");
     isInitialized_bp = false;
     // Check if the file exists
@@ -219,7 +217,18 @@ int *getFixCounts(BM_BufferPool *const bm) {
     return fixCounts; // Return the array of fix counts
 }
 
+//getNUmReadIO is used to return the number of times a page was read
+//This is helpful to choose the replacement stratergy : LRU
+int getNumReadIO (BM_BufferPool *const bm){
+    //readfromdisk is a variable that increments as the page number is used continuously
+    //Have to add in pinpage
+    return readFromDisk;
+}
 
+//getNumWriteIO is a function used to count the number of times a page is written on to the disk
+int getNumWriteIO (BM_BufferPool *const bm){
+    return writtenToDisk;
+}
 
 
 
