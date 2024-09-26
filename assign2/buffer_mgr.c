@@ -7,6 +7,10 @@ int writtenToDisk = 0;
 int readFromDisk = 0;
 int lruCounter = 0;
 bool isInitialized_bp;
+//Buffer size -> It represents the size of the buffer pool i.e. 
+//BS = maximum number of page frames that can be kept into the buffer pool
+int buffer_size = 0;
+
 /*
  * Initializes a buffer pool with the specified parameters.
  *
@@ -148,3 +152,59 @@ RC forceFlushPool(BM_BufferPool *const bm) {
         return RC_OK;
     }
 }
+
+
+/********************* Statistics Functions*****************************/
+//All the statistical functions will track the information about the buffer pool and its usage
+
+//1. getFrameContents is rerpsonsible for returning an array of page numbers stored in the buffer
+// pool's page frames.
+extern PageNumber *getFrameContents (BM_BufferPool *const bm){
+    //Allocate memory for the array of PageNumbers
+    PageNumber *frameContents = malloc(sizeof(PageNumber) * bm->numPages);
+
+    //Memory Allocation error
+    if(frameContents == NULL){
+        return NULL;
+    }
+    //Access the frame from the Buffer pool's management data
+    Frames *frames = (Frames *)bm->mgmtData;
+    //to retrieve the page numbers, we can loop through each frame in pool
+    for(int i = 0; i<bm->numPages; i++){
+        frameContents[i] = frames[i].pageNumber;
+    
+    }
+    return frameContents;    
+
+}
+
+//getDirtyFlags is a function used to create an array of boolean values whose page is "dirty" in a page frame
+bool *getDirtyFlags (BM_BufferPool *const bm){
+    //Allocate some memory for the array of dirty flags
+    //Calculating the total amount of memory needed for the array
+    bool *dirtyFlags = malloc(sizeof(bool) * bm->numPages);
+    if (dirtyFlags == NULL) {
+        // Handle memory allocation error
+        return NULL;
+    }
+
+    // Access the frames in the buffer pool's management data
+    Frames *frames = (Frames *)bm->mgmtData;
+
+    // Iterate through the buffer pool pages to determine the dirty status
+    for (int i = 0; i < bm->numPages; i++) {
+        dirtyFlags[i] = frames[i].dirty;
+    }
+
+    return dirtyFlags; // Return the array of dirty flags
+}
+
+
+
+
+
+
+
+
+
+
