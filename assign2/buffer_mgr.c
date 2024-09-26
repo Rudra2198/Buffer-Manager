@@ -199,6 +199,26 @@ bool *getDirtyFlags (BM_BufferPool *const bm){
     return dirtyFlags; // Return the array of dirty flags
 }
 
+//getFixCounts will shows how many clients are currently using the page
+//It represents the fix count for each page
+int *getFixCounts(BM_BufferPool *const bm) {
+    // Allocating memory for the array of fix counts
+    int *fixCounts = malloc(sizeof(int) * bm->numPages);
+    if (fixCounts == NULL) {
+        return NULL; // Memory allocation error
+    }
+
+    // Access the frames in the buffer pool's management data
+    Frames *frames = (Frames *)bm->mgmtData;
+
+    // Iterate through the buffer pool pages to retrieve the fix counts
+    for (int i = 0; i < bm->numPages; i++) {
+        fixCounts[i] = frames[i].fix_cnt; // Get the fix count for each page
+    }
+
+    return fixCounts; // Return the array of fix counts
+}
+
 
 
 
