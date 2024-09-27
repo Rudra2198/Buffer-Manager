@@ -4,12 +4,12 @@ The buffer manager in C is a vital component of database systems that efficientl
 
 # RUNNING THE MAKEFILE
 
-Open code editor
-Open terminal
-Run “make clean” to clean the compiled files, executable files and log files if there is any:
-make clean
-Type "make run_test_1" to run "test_assign2_1.c" file.
-Type "make run_test_2" to run "test_assign2_2.c" file.
+- Open code editor
+- Open terminal
+- Run “make clean” to clean the compiled files, executable files and log files if there is any:
+- make clean
+- Type "make run_test_1" to run "test_assign2_1.c" file.
+- Type "make run_test_2" to run "test_assign2_2.c" file.
 
 
 # INCLUDED FILES:
