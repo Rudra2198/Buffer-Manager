@@ -136,7 +136,7 @@ extern void LFU(BM_BufferPool *const bm, PageFrame *page) {
 // Tracks page access history to identify the least recently accessed page.
 extern void LRU(BM_BufferPool *const bm, PageFrame *page) {
     PageFrame *pageFrame = (PageFrame *)bm->mgmtData;
-    int i, least_hit_index, least_hit_num;
+    int i, least_hit_index = 0, least_hit_num;
 
     //Looping through all the pages to find the first unpinned page
     for (i = 0; i < buffer_size; i++) {
