@@ -20,6 +20,9 @@ typedef int RC;
 #define RC_BP_SHUNTDOWN_ERROR 7
 #define RC_BP_FLUSHPOOL_FAILED 8
 #define RC_BP_INIT_ERROR 9
+#define RC_ERROR 400
+//Adding new defintion to handle pinned pages are still in the buffer
+#define RC_PINNED_PAGES_IN_BUFFER 500
 
 #define RC_RM_COMPARE_VALUE_OF_DIFFERENT_DATATYPE 200
 #define RC_RM_EXPR_RESULT_IS_NOT_BOOLEAN 201
