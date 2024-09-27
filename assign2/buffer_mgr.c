@@ -119,6 +119,9 @@ extern void LFU(BM_BufferPool *const bm, PageFrame *page) {
         track_write_count++;
     }
 
+
+
+
     //Replace the least frequently used page with new page
     pageFrame[least_freq_index].data = page->data;
     pageFrame[least_freq_index].pageNum = page->pageNum;
@@ -165,9 +168,13 @@ extern void LRU(BM_BufferPool *const bm, PageFrame *page) {
 
     // Replace the least recently used page with the new page
     pageFrame[least_hit_index].data = page->data;
+
     pageFrame[least_hit_index].pageNum = page->pageNum;
+
     pageFrame[least_hit_index].dirtyBit = page->dirtyBit;
+
     pageFrame[least_hit_index].fixCount = page->fixCount;
+    
     pageFrame[least_hit_index].hitNum = page->hitNum;
 }
 

@@ -46,3 +46,4 @@ run_test_2: test2
 # Clean up object and executable files
 clean:
 	rm -f *.o test1 test2
+
