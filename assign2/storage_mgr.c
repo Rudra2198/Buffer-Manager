@@ -28,7 +28,10 @@ extern RC createPageFile(char *fileName) {
         SM_PageHandle emptyPage = (SM_PageHandle)calloc(PAGE_SIZE, sizeof(char));
 
         // Writing empty page to file.
-        if (fwrite(emptyPage, sizeof(char), PAGE_SIZE, pageFile) < PAGE_SIZE)
+        
+		
+		
+		if (fwrite(emptyPage, sizeof(char), PAGE_SIZE, pageFile) < PAGE_SIZE)
             printf("write failed \n");
         else
             printf("write succeeded \n");
@@ -55,7 +58,8 @@ extern RC openPageFile(char *fileName, SM_FileHandle *fHandle) {
     else {
         // Updating file handle's filename and setting the current position to the start of the page.
         fHandle->fileName = fileName;
-        fHandle->curPagePos = 0;
+        
+		fHandle->curPagePos = 0;
 
         // Using fstat() to get the file total size.
         struct stat fileInfo;
@@ -91,7 +95,10 @@ extern RC destroyPageFile(char *fileName) {
 
 extern RC readBlock(int pageNum, SM_FileHandle *fHandle, SM_PageHandle memPage) {
     // Checking if the pageNumber parameter is less than Total number of pages and less than 0.
-    if (pageNum >= fHandle->totalNumPages || pageNum < 0)
+    
+	
+	
+	if (pageNum >= fHandle->totalNumPages || pageNum < 0)
         return RC_READ_NON_EXISTING_PAGE; // Non-existing page error
 
     // Opening file stream in read mode.
@@ -222,7 +229,9 @@ extern RC readNextBlock(SM_FileHandle *fHandle, SM_PageHandle memPage) {
         return RC_READ_NON_EXISTING_PAGE;
     } else {
         // Calculate the current page number based on the current position
-        int pageNumber = fHandle->curPagePos / PAGE_SIZE;
+        
+		
+		int pageNumber = fHandle->curPagePos / PAGE_SIZE;
         int readPosition = (PAGE_SIZE * (pageNumber - 2));
 
         // Open the file in read mode
@@ -263,8 +272,11 @@ extern RC readLastBlock(SM_FileHandle *fHandle, SM_PageHandle memPage) {
     // Calculate the start position of the last page
     int readPosition = (fHandle->totalNumPages - 1) * PAGE_SIZE;
 
-    // Set the file pointer to the start of the last block
-    fseek(file, readPosition, SEEK_SET);
+    
+	
+	// Set the file pointer to the start of the last block
+    
+	fseek(file, readPosition, SEEK_SET);
 
     // Read characters from the file into the memory page buffer
     for (int i = 0; i < PAGE_SIZE; i++) {
@@ -299,7 +311,8 @@ extern RC writeBlock(int pageNum, SM_FileHandle *fHandle, SM_PageHandle memPage)
 
     if (pageNum == 0) {
         // Write data directly to the specified page
-        fseek(file, writePosition, SEEK_SET);
+        
+		fseek(file, writePosition, SEEK_SET);
         for (int i = 0; i < PAGE_SIZE; i++) {
             // Append an empty block if the end of file is reached during writing
             if (feof(file))
@@ -332,6 +345,8 @@ extern RC writeCurrentBlock(SM_FileHandle *fHandle, SM_PageHandle memPage) {
         return RC_FILE_NOT_FOUND;
 
     // Add an empty block if needed before writing
+
+
     appendEmptyBlock(fHandle);
 
     // Move the file pointer to the current position
